@@ -246,7 +246,7 @@ def get_code(
     current_user: User = Depends(get_current_active_user),
 ):
     task = _get_task_or_404(db, task_id, current_user)
-    return {"generated_code": task.generated_code}
+    return {"code": task.generated_code}
 
 
 @router.put("/{task_id}/code")
@@ -259,7 +259,7 @@ def update_code(
     if current_user.role not in (UserRole.admin, UserRole.developer):
         raise HTTPException(status_code=403, detail="Developer access required")
     task = _get_task_or_404(db, task_id, current_user)
-    task.generated_code = payload.generated_code
+    task.generated_code = payload.code
     db.commit()
     db.refresh(task)
     return {"message": "Code updated", "task_id": task_id}

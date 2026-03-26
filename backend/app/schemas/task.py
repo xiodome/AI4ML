@@ -14,7 +14,7 @@ class TaskCreate(BaseModel):
 
 
 class TaskCodeUpdate(BaseModel):
-    generated_code: str
+    code: str
 
 
 class InterventionRequest(BaseModel):

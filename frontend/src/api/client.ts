@@ -25,14 +25,8 @@ api.interceptors.request.use((config) => {
 });
 
 // Auth
-export const login = (username: string, password: string) => {
-  const params = new URLSearchParams();
-  params.append('username', username);
-  params.append('password', password);
-  return api.post<LoginResponse>('/api/auth/login', params, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  });
-};
+export const login = (username: string, password: string) =>
+  api.post<LoginResponse>('/api/auth/login', { username, password });
 
 export const register = (username: string, email: string, password: string) =>
   api.post<User>('/api/auth/register', { username, email, password });
