@@ -47,7 +47,7 @@ class Dataset(Base):
     is_public = Column(Boolean, default=False)
     review_reason = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     owner = relationship("User", back_populates="datasets")
     tasks = relationship("Task", back_populates="dataset")

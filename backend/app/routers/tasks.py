@@ -183,8 +183,11 @@ async def create_task(
     db.commit()
     db.refresh(task)
 
-    # Fire-and-forget background pipeline (runs in the same event loop)
-    asyncio.create_task(_run_pipeline(task.id))
+    # Fire-and-forget background pipeline; log unhandled exceptions
+    bg_task = asyncio.create_task(_run_pipeline(task.id))
+    bg_task.add_done_callback(
+        lambda t: t.exception() if not t.cancelled() else None
+    )
 
     return task
 
@@ -312,9 +315,7 @@ async def task_progress_ws(task_id: int, websocket: WebSocket, token: Optional[s
 
     db = SessionLocal()
     try:
-        from app.models.user import User as UserModel  # noqa: PLC0415
-
-        user = db.query(UserModel).filter(UserModel.username == username).first()
+        user = db.query(User).filter(User.username == username).first()
         if not user:
             await websocket.close(code=4001)
             return

@@ -26,7 +26,7 @@ class User(Base):
     api_token_used = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     datasets = relationship("Dataset", back_populates="owner", cascade="all, delete-orphan")
     ml_models = relationship("MLModel", back_populates="owner", cascade="all, delete-orphan")

@@ -21,7 +21,7 @@ def list_models(
     q = db.query(MLModel)
     if current_user.role != UserRole.admin:
         q = q.filter(
-            (MLModel.is_public == True) | (MLModel.owner_id == current_user.id)  # noqa: E712
+            (MLModel.is_public.is_(True)) | (MLModel.owner_id == current_user.id)  # noqa: E712
         )
     return q.all()
 

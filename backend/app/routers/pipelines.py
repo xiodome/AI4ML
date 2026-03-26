@@ -20,7 +20,7 @@ def list_pipelines(
     q = db.query(Pipeline)
     if current_user.role != UserRole.admin:
         q = q.filter(
-            (Pipeline.is_public == True) | (Pipeline.owner_id == current_user.id)  # noqa: E712
+            (Pipeline.is_public.is_(True)) | (Pipeline.owner_id == current_user.id)  # noqa: E712
         )
     return q.all()
 

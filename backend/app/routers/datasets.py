@@ -36,7 +36,7 @@ def list_datasets(
     q = db.query(Dataset)
     if current_user.role != UserRole.admin:
         q = q.filter(
-            (Dataset.is_public == True) | (Dataset.owner_id == current_user.id)  # noqa: E712
+            (Dataset.is_public.is_(True)) | (Dataset.owner_id == current_user.id)  # noqa: E712
         )
     if category:
         q = q.filter(Dataset.category == category)

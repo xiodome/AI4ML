@@ -84,18 +84,18 @@ def _generate_code(
     )
 
     eval_code = (
-        """\
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    r2   = r2_score(y_test, y_pred)
-    print(f"RMSE : {rmse:.4f}")
-    print(f"R²   : {r2:.4f}")
-    return {"rmse": float(rmse), "r2": float(r2)}"""
+        "rmse = np.sqrt(mean_squared_error(y_test, y_pred))\n"
+        '    r2   = r2_score(y_test, y_pred)\n'
+        '    print(f"RMSE : {rmse:.4f}")\n'
+        '    print(f"R2   : {r2:.4f}")\n'
+        '    return {"rmse": float(rmse), "r2": float(r2)}'
         if is_regression
-        else """\
-    acc = accuracy_score(y_test, y_pred)
-    print(f"Accuracy : {acc:.4f}")
-    print(classification_report(y_test, y_pred))
-    return {"accuracy": float(acc)}"""
+        else (
+            "acc = accuracy_score(y_test, y_pred)\n"
+            '    print(f"Accuracy : {acc:.4f}")\n'
+            "    print(classification_report(y_test, y_pred))\n"
+            '    return {"accuracy": float(acc)}'
+        )
     )
 
     metric_imports = (
@@ -175,10 +175,7 @@ def train_and_evaluate(df: pd.DataFrame):
     target_col = df.columns[-1]
     X = df.drop(columns=[target_col])
     y = df[target_col]
-
-{"    le = LabelEncoder()" if not is_regression else ""}
-{"    y = le.fit_transform(y.astype(str))" if not is_regression else ""}
-
+{"" if is_regression else chr(10) + "    le = LabelEncoder()" + chr(10) + "    y = le.fit_transform(y.astype(str))"}
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE
     )

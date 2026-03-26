@@ -19,7 +19,7 @@ class Pipeline(Base):
     is_public = Column(Boolean, default=False)
     tags = Column(JSON, default=list)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     owner = relationship("User", back_populates="pipelines")
     original = relationship(
